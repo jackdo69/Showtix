@@ -7,10 +7,10 @@
   </div>
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-      <router-link to="/" tag="li">
+      <router-link to="/" class="nav">
         <a>Main events</a>
       </router-link>
-      <router-link to="/Auth" tag="li">
+      <router-link to="/Auth" class="nav">
         <a>Accounts</a>
       </router-link>
     </ul>
@@ -32,6 +32,15 @@
 </script>
 
 <style scoped>
+  .nav {
+    display: block;
+    text-align: center;
+    padding: 8px 8px;
+    text-decoration: none;
+    border-radius: 2px;
+    border: 1px;
+  }
+  .nav:hover { background-color: #90EE90;}
   img {
     height: 100px;
   }
