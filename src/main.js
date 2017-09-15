@@ -1,22 +1,46 @@
 import Vue from 'vue'
-import VueRouter from 'vue-router';
-import App from './App.vue'
-import {routes} from './routes.js';
+import Auth from './data/Auth'
+import App from './App'
+import VueRouter from 'vue-router'
+import AuthPage from './components/pages/Auth'
+import Home from './components/pages/Home'
+import EventDetail from './components/pages/EventDetail'
 
-
-Vue.use(VueRouter);
+Vue.use(VueRouter)
 
 const router = new VueRouter({
-  routes,
-  mode: 'history'
-});
+  mode: 'history',
+  routes: [
+    {
+      name: 'home',
+      path: './components/pages/Home',
+      component: Home
+    },
+    {
+      name: 'auth',
+      path: '/auth',
+      component: AuthPage
+    },
+    {
+      name: 'detail',
+      path: './components/pages/EventDetail',
+      component: Detail
+    }
+  ]
+})
 
+router.beforeEach((to, from, next) => {
+  if (Auth.userData) { next() }
+  if (to.meta.auth && !Auth.getAuth()) {
+    next({name: 'auth'})
+  } else {
+    next()
+  }
+})
 
 new Vue({
   el: '#app',
-  //start of auth
-
-  
-  router,
-  render: h => h(App)
+  template: '<App/>',
+  components: { App },
+  router: router
 })
