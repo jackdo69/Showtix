@@ -31,7 +31,7 @@
 </template>
 <script>
   import Auth from '../../data/Auth'
-
+  import EventBus from '../EventBus'
   export default {
     data () {
       return {
@@ -78,7 +78,7 @@
         // }
         console.log(this)
         this.$router.push({name: 'home'})
-      }
+      }      
     }
   }
 </script>
@@ -114,13 +114,12 @@
     font-size: 18px;
     background: #fff;
     border: 1px solid #41b883;
-    padding: 4px 6px;
+    padding: 10px 15px;
     margin: 0;
     border-radius: 3px;
   }
   .auth-form .btn-group button{
     border-radius: 3px 0 0 3px;
-    width: 50%;
     float: left;
   }
   .auth-form .btn-group button + button{

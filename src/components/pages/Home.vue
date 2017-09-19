@@ -1,98 +1,70 @@
 <template>
-    <div>
+    <div class="container">
       <h1>Main events</h1>
       <hr />
         <ul>
-              <li class="single_event">
+              
+              <li class="single_event" v-for="event in events" :key="event['.key']">
                 <div class="row">
-                  <div class="col-sm-3">
-                    <img src="http://www.kontrolmag.com/wp-content/uploads/2017/01/adele.jpg" />
+                  <div class="col-sm-3" v-model="newEvent.pic_url">
+                    <img v-bind:src="event.pic_url">
                   </div>
                   <div class="col-sm-6">
                     <p class="text-info">
 
-                      <b>Venue: Anz Stadium | Date: 20 Sept | Time: 6 pm</b>
+                      <b>{{event.location}}: {{event.name}} | Date: {{event.created}}</b>
                     </p>
-                    <p>Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                       Ut posuere dictum sem bibendum ultricies. Morbi euismod id eros non tristique.
-                       Donec dapibus libero in ligula sagittis, eu commodo ligula feugiat.
-                     </p>
+                    <p>Description: {{event.description}}</p>
                   </div>
                   <div class="col-sm-3">
-                    <button class="btn btn-primary">View Details</button>
+                    <a href="javascript:;" class="btn btn-primary" @click="viewDetail(event)">View Details</a>
                   </div>
               </div>
+              <hr />
               </li>
-            <hr />
-            <li class="single_event">
-              <div class="row">
-                <div class="col-sm-3">
-                  <img src="https://eclecticmusiclover.files.wordpress.com/2016/08/coldplay-tour-pic.jpg" />
-                </div>
-                <div class="col-sm-6">
-                  <p class="text-info">
-
-                    <b>Venue: Anz Stadium | Date: 20 Sept | Time: 6 pm</b>
-                  </p>
-                  <p>Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                     Ut posuere dictum sem bibendum ultricies. Morbi euismod id eros non tristique.
-                     Donec dapibus libero in ligula sagittis, eu commodo ligula feugiat.
-                   </p>
-                </div>
-                <div class="col-sm-3">
-                  <button class="btn btn-primary">View Details</button>
-                </div>
-            </div>
-            </li>
-          <hr />
-          <li class="single_event">
-            <div class="row">
-              <div class="col-sm-3">
-                <img src="http://img.wennermedia.com/social/bruno-mars--press-photo-2---kai-z-feng-885f1d8b-0fc8-4ea6-a613-06ef6ce4e443.jpg" />
-              </div>
-              <div class="col-sm-6">
-                <p class="text-info">
-
-                  <b>Venue: Anz Stadium | Date: 20 Sept | Time: 6 pm</b>
-                </p>
-                <p>Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                   Ut posuere dictum sem bibendum ultricies. Morbi euismod id eros non tristique.
-                   Donec dapibus libero in ligula sagittis, eu commodo ligula feugiat.
-                 </p>
-              </div>
-              <div class="col-sm-3">
-                <button class="btn btn-primary">View Details</button>
-              </div>
-          </div>
-          </li>
-        <hr />
-        <li class="single_event">
-          <div class="row">
-            <div class="col-sm-3">
-              <img src="https://static.independent.co.uk/s3fs-public/thumbnails/image/2016/01/29/11/Taylor-Swift-revenge-nerds.jpg" />
-            </div>
-            <div class="col-sm-6">
-              <p class="text-info">
-
-                <b>Venue: Anz Stadium | Date: 20 Sept | Time: 6 pm</b>
-              </p>
-              <p>Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                 Ut posuere dictum sem bibendum ultricies. Morbi euismod id eros non tristique.
-                 Donec dapibus libero in ligula sagittis, eu commodo ligula feugiat.
-               </p>
-            </div>
-            <div class="col-sm-3">
-              <button class="btn btn-primary" onclick="/Auth">View Details</button>
-            </div>
-        </div>
-        </li>
-      <hr />
-
-
-
         </ul>
     </div>
 </template>
+
+
+<script>
+import eventRepository from '../../data/EventRepository'
+  import EventBus from '../../components/EventBus'
+  import * as firebase from "firebase";
+  let db = firebase.database();
+  let eventsRef = db.ref('events')
+import moment from 'moment'
+
+export default {
+  data () {
+    return {
+      events: [],
+      newEvent: {
+  			name: '',
+  			pic_url: '',
+  			location: '',
+  			description: '',
+  			detail: '',
+  			price: '',
+  			seats_available: '',
+  			created: moment().format('MM/DD/YYYY hh:mm')
+  		}
+    }
+  },
+  methods:{
+  	viewDetail: function(event) {
+			console.log("viewDetail:" + event);
+			this.newEvent = event;
+			const childKey = event['.key'];
+			this.$router.push({ name:'/eventDetail/:id', params: { id: childKey } })
+			
+		}
+  },
+  created() {
+		this.$bindAsArray('events', eventsRef);
+	}
+}
+</script>
 
 <style scoped>
   .right {float: right;}
