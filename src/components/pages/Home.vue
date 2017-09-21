@@ -3,7 +3,6 @@
       <h1>Main events</h1>
       <hr />
         <ul>
-              
               <li class="single_event" v-for="event in events" :key="event['.key']">
                 <div class="row">
                   <div class="col-sm-3" v-model="newEvent.pic_url">
@@ -11,7 +10,6 @@
                   </div>
                   <div class="col-sm-6">
                     <p class="text-info">
-
                       <b>{{event.location}}: {{event.name}} | Date: {{event.created}}</b>
                     </p>
                     <p>Description: {{event.description}}</p>
@@ -26,13 +24,13 @@
     </div>
 </template>
 
-
 <script>
+
 import eventRepository from '../../data/EventRepository'
-  import EventBus from '../../components/EventBus'
-  import * as firebase from "firebase";
-  let db = firebase.database();
-  let eventsRef = db.ref('events')
+import EventBus from '../../components/EventBus'
+import * as firebase from "firebase";
+let db = firebase.database();
+let eventsRef = db.ref('events')
 import moment from 'moment'
 
 export default {
@@ -57,7 +55,6 @@ export default {
 			this.newEvent = event;
 			const childKey = event['.key'];
 			this.$router.push({ name:'/eventDetail/:id', params: { id: childKey } })
-			
 		}
   },
   created() {
@@ -75,7 +72,7 @@ export default {
     margin: 5px;
   }
   .single_event {
-    border: red;
+    /*border: red;*/
     margin: auto;
     padding-top: 5px;
   }

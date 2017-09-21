@@ -20,13 +20,11 @@
 <script>
 
 import eventRepository from '../../data/EventRepository'
-  import EventBus from '../../components/EventBus'
-  import * as firebase from "firebase";
-  let db = firebase.database();
-  let eventsRef = db.ref('events')
+import EventBus from '../../components/EventBus'
+import * as firebase from "firebase";
+let db = firebase.database();
+let eventsRef = db.ref('events')
 import moment from 'moment'
-
-
 
 export default {
   data () {
@@ -44,7 +42,7 @@ export default {
     }
   },
   methods:{
-  	
+
   },
   created() {
   		var self = this;
@@ -56,7 +54,7 @@ export default {
 			  this.newEvent = value;
 				     console.log(this.newEvent.name);
 			});
-			
+
 	}
 }
 </script>
