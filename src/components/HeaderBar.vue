@@ -1,40 +1,55 @@
 <template>
-    <div class="container">
-      <nav class="navbar navbar-expand-lg navbar-light bg-light">
-          <div id="logo">
-                    <img src="../assets/quicktix_logo.jpg" />
-          </div>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-              <router-link to="/home" class="nav">
-                <a>Main events</a>
-              </router-link>
-              
-	              <router-link to="/Auth" class="nav" v-if="!user">
-	              <a>Accounts</a>
-	            </router-link>
-	            <router-link to="/eventManager" class="nav" v-if="user">
-	              <a>Event Manager</a>
-	              </router-link>
-              <router-link to="/index" class="nav" v-if="user">
-              <a>Hi, {{user.userTitle}}</a>
-              </router-link>
-              		
-	              <a class="nav"  href="#" v-on:click.prevent="signOut" v-if="user">Logout
-	            </a>
-            </ul>
-            <form class="form-inline my-2 my-lg-0">
-              <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-              <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            </form>
-          </div>
-        </nav>
-    </div>
+<div class="bg-light">
+    <nav class="navbar navbar-inverse navbar-light">
+	  <div class="container">
+		  <div class="row">
+				<div class="navbar-header"> 
+					<div id="logo">
+							<img src="../assets/quicktix_logo.jpg" />
+						</div>
+				</div>
+				<ul class="nav navbar-nav navbar-left" style="padding-left: 50px;">
+				 	<li class="scroll">
+					<router-link to="/home">
+					<a>Main events</a>
+					</router-link>
+					</li>
+					<li  v-if="!user" class="scroll">
+					<router-link to="/Auth">
+					  <a>Accounts</a>
+					</router-link>
+					</li>
+					<li v-if="user && user.isAdmin == true">
+					<router-link to="/eventManager" class="nav">
+					  <a>Event Manager</a>
+					  </router-link>
+					</li>
+					<li  v-if="user">
+					<router-link to="/index" class="nav">
+				  <a>Hi, {{user.userTitle}}</a>
+				  </router-link>
+					</li>
+					<li><a class="nav"  href="#" v-on:click.prevent="signOut" v-if="user">Logout
+					</a></li>
+					<li></li>
+				</ul>
+				<div id="search" class="navbar-collapse collapse navbar-right">
+				  <form class="form-inline my-2 my-lg-0">
+					  <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+					  <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+					</form>
+				</div>
+		  </div>
+	  </div>
+	</nav>
+</div>
 </template>
 <script>
  import * as firebase from "firebase";
  import Auth from '../data/Auth'
   import EventBus from './EventBus'
+  import checkAuth from '../data/checkAuth'
+  
   export default {
     data () {
       return {
@@ -56,7 +71,8 @@
             }
             this.user = {
               userTitle: authed.providerData[0].displayName || authed.providerData[0].email || '', // if there's no displayName, take the email, if there's no email, use an empty string
-              imageUrl: authed.providerData[0].photoURL || 'https://www.gravatar.com/avatar/' // Firebase 3 no longer supports auto Gravatar image fetch
+              imageUrl: authed.providerData[0].photoURL || 'https://www.gravatar.com/avatar/', // Firebase 3 no longer supports auto Gravatar image fetch
+              isAdmin: checkAuth.isAdmin(authed.providerData[0].email)
             }
           },
           signOut () {
@@ -94,6 +110,14 @@
   }
 </script>
 <style>
+.navbar-inverse {
+    background-color: transparent;
+    border-color: transparent;
+}
+
+#search{
+	padding-top:10px;
+}
   header{
     position: fixed;
     left: 0;
@@ -165,8 +189,15 @@
 	    border-radius: 2px;
 	    border: 1px;
 	  }
-	  .nav:hover { background-color: #90EE90;}
-	  img {
+  #logo img {
 	    height: 100px;
+	  }
+	  
+	  .scroll:hover{
+	  background-color: #90EE90;
+	  }
+	  
+	  .navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover{
+	   background-color: #90EE90;
 	  }
 </style>

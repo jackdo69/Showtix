@@ -20,13 +20,6 @@
     <div v-show="wantsToSignUp">
       <button type="submit" class="signup-submit">Sign up</button>
     </div>
-    <hr>
-    <div class="social-providers">
-      <a href="#" v-on:click.prevent="signInWithProvider('facebook')"><i class="fa fa-facebook-square" aria-hidden="true"></i></a>
-      <a href="#" v-on:click.prevent="signInWithProvider('twitter')"><i class="fa fa-twitter-square" aria-hidden="true"></i></a>
-      <a href="#" v-on:click.prevent="signInWithProvider('google')"><i class="fa fa-google-plus-square" aria-hidden="true"></i></a>
-      <a href="#" v-on:click.prevent="signInWithProvider('github')"><i class="fa fa-github-square" aria-hidden="true"></i></a>
-    </div>
   </form>
 </template>
 <script>
@@ -41,16 +34,20 @@
         wantsToSignUp: false
       }
     },
+    created() {
+    	Auth.signOut()
+      },
     methods: {
       signUpWithPassword () {
         if (this.password === this.confirmPassword) {
+          alert('testing')
           Auth.signUpWithPassword({
             email: this.email,
             password: this.password
           })
-            .then((userData) => this.loginWithPassword())                                              // signIn
-            .then(() => EventBus.$emit('alert', {type: 'success', message: 'Signed up successfully'}))  // let user know everything was successful
-            .catch((error) => EventBus.$emit('alert', {type: 'error', message: error.message}))         // tell the user an error occurred
+            .then((userData) => this.loginWithPassword())   // signIn
+            .then(alert('Signed up successfully'))  // let user know everything was successful
+            .catch((error) => alert(error.message))         // tell the user an error occurred
         }
       },
       loginWithPassword () {
@@ -59,26 +56,16 @@
           password: this.password
         })
           .then((userData) => {
-            EventBus.$emit('alert', {type: 'success', message: 'Signed in successfully'})
+            alert('Signed in successfully')
             this.onSignedIn()
             return userData
           })
-          .catch((error) => EventBus.$emit('alert', {type: 'error', message: error.message})) // tell the user an error occurred
-      },
-      signInWithProvider (provider) {
-        Auth.signInWithProvider(provider, (error, authData) => {
-          if (error) {
-            return EventBus.$emit('alert', {type: 'error', message: error.message})
-          }
-          this.onSignedIn()
-        })
+          .catch((error) => alert(error.message)) // tell the user an error occurred
       },
       onSignedIn () {
-        // if (!this.$route.querry) {
-        // }
         console.log(this)
         this.$router.push({name: 'home'})
-      }      
+      }
     }
   }
 </script>

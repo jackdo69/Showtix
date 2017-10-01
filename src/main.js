@@ -8,6 +8,8 @@ import Home from './components/pages/Home'
 import EventDetail from './components/pages/EventDetail'
 import Index from './components/events/Index'
 import VeeValidate from 'vee-validate';
+import * as firebase from "firebase";
+import checkAuth from './data/checkAuth'
 
 Vue.use(VueFire)
 Vue.use(VeeValidate)
@@ -39,50 +41,25 @@ const router = new VueRouter({
 		{
 			name : 'event_manager',
 			path : '/eventManager',
-			component : Index
+			component : Index,
+			meta: { requiresAuth: true }
 		}
 	]
 })
 
-/*router.beforeEach((to, from, next) => {
-	if (Auth.userData) {
-		next()
-	}
-	if (to.meta.auth && !Auth.getAuth()) {
-		next({
-			name : 'auth'
-		})
-	} else {
-		next()
-	}
-})*/
 
+router.beforeEach((to, from, next) => {
+    console.log("checkAuth():");
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (to.matched.some(record => record.meta.requiresAuth) && !user &&!checkAuth.isAdmin(user.email)) {
+            next({ path: '/auth', query: { redirect: to.fullPath }});
+          } else {
+            next();
+          }
+      });
+   
+})
 
-Vue.prototype.setCookie = (c_name, value, expiredays) => {
-	var exdate = new Date();
-	exdate.setDate(exdate.getDate() + expiredays);
-	document.cookie = c_name + "=" + escape(value) + ((expiredays == null) ? "" : ";expires=" + exdate.toGMTString());
-}
-
-//getCookie
-function getCookie(name) {
-	var arr,
-		reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
-	if (arr = document.cookie.match(reg))
-		return (arr[2]);
-	else
-		return null;
-}
-Vue.prototype.getCookie = getCookie;
-
-//delCookie
-Vue.prototype.delCookie = (name) => {
-	var exp = new Date();
-	exp.setTime(exp.getTime() - 1);
-	var cval = getCookie(name);
-	if (cval != null)
-		document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString();
-}
 
 new Vue({
 	el : '#app',

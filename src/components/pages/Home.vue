@@ -2,35 +2,32 @@
     <div class="container">
       <h1>Main events</h1>
       <hr />
-        <ul>
-              <li class="single_event" v-for="event in events" :key="event['.key']">
-                <div class="row">
-                  <div class="col-sm-3" v-model="newEvent.pic_url">
-                    <img v-bind:src="event.pic_url">
-                  </div>
-                  <div class="col-sm-6">
-                    <p class="text-info">
-                      <b>{{event.location}}: {{event.name}} | Date: {{event.created}}</b>
-                    </p>
-                    <p>Description: {{event.description}}</p>
-                  </div>
-                  <div class="col-sm-3">
-                    <a href="javascript:;" class="btn btn-primary" @click="viewDetail(event)">View Details</a>
-                  </div>
-              </div>
-              <hr />
-              </li>
-        </ul>
+      <div class="tab-pane fade in active" v-for="event in events" :key="event['.key']">
+		<div class="media">
+			<img v-bind:src="event.pic_url" v-model="event.pic_url" class="pull-left media-object">
+			<div class="media-body">
+				<p class="text-info col-sm-12">
+				  <b>{{event.location}}: {{event.name}} | Date: {{event.created}}</b>
+				</p>
+				<p><strong>Description:</strong> {{event.description}}</p>
+				<p class="text-right">
+					<a href="javascript:;" class="btn btn-primary" @click="viewDetail(event)">View Details</a>
+				</p>
+			</div>
+		</div>
+</div>
+
+
     </div>
 </template>
 
-<script>
 
+<script>
 import eventRepository from '../../data/EventRepository'
-import EventBus from '../../components/EventBus'
-import * as firebase from "firebase";
-let db = firebase.database();
-let eventsRef = db.ref('events')
+  import EventBus from '../../components/EventBus'
+  import * as firebase from "firebase";
+  let db = firebase.database();
+  let eventsRef = db.ref('events')
 import moment from 'moment'
 
 export default {
@@ -43,8 +40,10 @@ export default {
   			location: '',
   			description: '',
   			detail: '',
-  			price: '',
-  			seats_available: '',
+  			price: 0,
+  			rest: 0,
+  			quantity: 0,
+  			seats_available: 0,
   			created: moment().format('MM/DD/YYYY hh:mm')
   		}
     }
@@ -55,6 +54,7 @@ export default {
 			this.newEvent = event;
 			const childKey = event['.key'];
 			this.$router.push({ name:'/eventDetail/:id', params: { id: childKey } })
+
 		}
   },
   created() {
@@ -65,16 +65,15 @@ export default {
 
 <style scoped>
   .right {float: right;}
-  img {
-    height: 100px;
+  .media img {
+    width: 200px;
     float: left;
     border: 1px;
     margin: 5px;
   }
-  .single_event {
-    /*border: red;*/
-    margin: auto;
-    padding-top: 5px;
-  }
   ul { list-style-type: none; }
+
+  .tab-pane{
+	    padding-bottom: 30px;
+  }
 </style>

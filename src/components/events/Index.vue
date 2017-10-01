@@ -8,7 +8,7 @@
 	<div class="panel-body">
 		<form id="form">
 			<div class="row">
-			  <div class="col-xl-6">
+			  <div class="col-sm-6">
 			    <div class="form-group">
 				<label for="name">Event Name</label>
 				<input name="name" v-model="newEvent.name" v-validate="'required'" :class="{'input': true, 'is-danger': errors.has('name') }" type="text" class="form-control" placeholder="Event Name">
@@ -20,36 +20,66 @@
 				<input v-model="newEvent.pic_url" type="text" class="form-control" id="pic_url">
 			</div>
 			<div class="form-group">
-				<label for="description">description</label>
+				<label for="description">Description</label>
 				<input v-model="newEvent.description" type="text" class="form-control" id="description" placeholder="Event description">
 			</div>
 			<div class="form-group">
-				<label for="location">location</label>
+				<label for="location">Location</label>
 				<input v-model="newEvent.location" type="text" class="form-control" id="location" placeholder="Event location">
 			</div>
 			<div class="form-group">
-			<label for="price">price</label>
-			<input name="price" v-model="newEvent.price" type="text" class="form-control" v-validate="'required|numeric'" :class="{'input': true, 'is-danger': errors.has('price') }" placeholder="Event price">
-			<i v-show="errors.has('price')" class="fa fa-warning"></i>
-            	<span v-show="errors.has('price')" class="help is-danger">{{ errors.first('price') }}</span>
-		</div>
-		<div class="form-group">
-			<label for="seats_available">seats_available</label>
-			<input v-model="newEvent.seats_available" type="text" class="form-control" id="seats_available" placeholder="Event seats_available">
-		</div>
-		<div class="form-group">
-			<label for="seats_available">Created</label>
-			<input v-model="newEvent.created" type="text" class="form-control" id="created" placeholder="created">
-		</div>
-			  </div>
-			  <div class="col-xl-6">
-			     <div class="form-group">
-				<label for="detail">detail</label>
-				<textarea v-model="newEvent.detail" name="" id="detail" cols="60" rows="10"></textarea>
+				<label for="seats_available">Seats available</label>
+				<input v-model="newEvent.seats_available" type="text" class="form-control" id="seats_available" placeholder="Event seats_available">
 			</div>
+			<div class="form-group">
+				<label for="seats_available">Created</label>
+				<input v-model="newEvent.created" type="text" class="form-control" id="created" placeholder="created">
+			</div>
+		  </div>
+		  <div class="col-sm-6">
+		  	<div class="form-group">
+		  		<div class="col-sm-6">
+		  		<label for="Pricea">Price A</label>
+				<input name="price" v-model="newEvent.priceA" type="text" class="form-control" v-validate="'required|numeric'" :class="{'input': true, 'is-danger': errors.has('priceA') }" placeholder="Event price">
+				</div>
+			
+				<div class="col-sm-6">
+				<label for="Pricea">Quantity</label>
+				<input name="price" v-model="newEvent.quantityA" type="text" class="form-control" v-validate="'required|numeric'" :class="{'input': true, 'is-danger': errors.has('quantityA') }" placeholder="quantity A">
+				</div>
+			
+			</div>
+			<div class="form-group">
+				<div class="col-sm-6">
+		  		<label for="Priceb">Price B</label>
+				<input name="price" v-model="newEvent.priceB" type="text" class="form-control" v-validate="'required|numeric'" :class="{'input': true, 'is-danger': errors.has('priceB') }" placeholder="Event price">
+			</div>
+			
+				<div class="col-sm-6">
+				<label for="Pricea">Quantity</label>
+				<input name="price" v-model="newEvent.quantityB" type="text" class="form-control" v-validate="'required|numeric'" :class="{'input': true, 'is-danger': errors.has('quantityB') }" placeholder="quantity B">
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-6">
+		  		<label for="Pricec">Price C</label>
+				<input name="price" v-model="newEvent.priceC" type="text" class="form-control" v-validate="'required|numeric'" :class="{'input': true, 'is-danger': errors.has('priceC') }" placeholder="Event price">
+				</div>
+			
+				<div class="col-sm-6">
+				<label for="Pricea">Quantity</label>
+				<input name="price" v-model="newEvent.quantityC" type="text" class="form-control" v-validate="'required|numeric'" :class="{'input': true, 'is-danger': errors.has('quantityC') }" placeholder="quantity C">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="detail">Detail</label>
+				<textarea class="form-control" v-model="newEvent.detail" name="" id="detail" cols="60" rows="10"></textarea>
+			</div>
+			<div class="text-right">
+			<input name="rest" v-model="newEvent.rest" type="hidden">
 			<a class="btn btn-success my-2 my-sm-0" v-if="newEvent['.key']" v-on:click="updateEvent(newEvent)">Update</a>
 			<a class="btn btn-success my-2 my-sm-0" v-if="!newEvent['.key']" v-on:click="addEvent">Add Event</a>
-			  </div>
+			  </div></div>
 			          
 			</div>
 		</form>
@@ -60,14 +90,17 @@
 <div class="panel panel-default">
 	<!-- Default panel contents -->
 	<div class="panel-heading">Events</div>
+	<div class="panel-body">
 	<!-- Table -->
 	<table class="table table-striped">
 		<tr>
 			<th>Event Name</th>
 			<th>Pic URL</th>
 			<th>location</th>
-			<th style="width:20%">description</th>
-			<th>price</th>
+			<th>price A/quantity</th>
+			<th>price B/quantity</th>
+			<th>price C/quantity</th>
+			<th>rest</th>
 			<th>seats_available</th>
 			<th>created</th>
 			<th>Actions</th>
@@ -76,8 +109,10 @@
 			<td contenteditable v-model="newEvent.name">{{event.name}}</td>
 			<td v-model="newEvent.pic_url"><img v-bind:src="event.pic_url"></td>
 			<td>{{event.location}}</td>
-			<td>{{event.description}}</td>
-			<td>{{event.price}}</td>
+			<td>{{event.priceA}}/{{event.quantityA}}</td>
+			<td>{{event.priceB}}/{{event.quantityB}}</td>
+			<td>{{event.priceC}}/{{event.quantityC}}</td>
+			<td>{{event.rest}}</td>
 			<td>{{event.seats_available}}</td>
 			<td>{{event.created}}</td>
 			<td>
@@ -87,7 +122,7 @@
 		</tr>
 	</table>
 </div>
-
+</div>
 <ul class="errors">
 </ul>
 </div>
@@ -126,8 +161,14 @@ import moment from 'moment'
   			location: '',
   			description: '',
   			detail: '',
-  			price: '',
-  			seats_available: '',
+  			priceA: 0,
+  			priceB: 0,
+  			priceC: 0,
+  			quantityA: 0,
+  			quantityB: 0,
+  			quantityC: 0,
+  			rest: 0,
+  			seats_available: 0,
   			created: moment().format('MM/DD/YYYY hh:mm')
   		}
       }
@@ -139,7 +180,7 @@ import moment from 'moment'
 		addEvent: function () {
 			alert("addEvent::validate:");
 			this.$validator.validateAll().then((result) => {
-		       	alert("validateBeforeSubmit" + result);
+		       	//alert("validateBeforeSubmit" + result);
 		        if (result) {
 					eventsRef.push(this.newEvent);
 					this.newEvent.name= '';
@@ -147,8 +188,14 @@ import moment from 'moment'
 					this.newEvent.location= '';
 					this.newEvent.description= '';
 					this.newEvent.detail= '';
-					this.newEvent.price= '';
-					this.newEvent.seats_available= '';
+					this.newEvent.priceA= 0;
+					this.newEvent.priceB= 0;
+					this.newEvent.priceC= 0;
+					this.newEvent.rest= 0;
+					this.newEvent.quantityA= 0;
+					this.newEvent.quantityB= 0;
+					this.newEvent.quantityC= 0;
+					this.newEvent.seats_available= 0;
 					this.newEvent.created= moment().format('MM/DD/YYYY hh:mm');
 					return true;
 				}else{
@@ -164,7 +211,7 @@ import moment from 'moment'
 		updateEvent: function(event) {
 			console.log("addEvent::validate:");
 			this.$validator.validateAll().then((result) => {
-		       	alert("validateBeforeSubmit" + result);
+		       	//alert("validateBeforeSubmit" + result);
 		        if (result) {
 					//event.name = "changed"
 					const childKey = event['.key'];
@@ -208,6 +255,7 @@ padding: 20px;
   
   .table-striped img{
 	  width:100px;
+  padding:5px;	
   }
   .is-danger{
    color:red;
