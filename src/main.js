@@ -10,6 +10,8 @@ import Index from './components/events/Index'
 import VeeValidate from 'vee-validate';
 import * as firebase from "firebase";
 import checkAuth from './data/checkAuth'
+import printOrder from './components/pages/printOrder'
+
 
 Vue.use(VueFire)
 Vue.use(VeeValidate)
@@ -37,6 +39,11 @@ const router = new VueRouter({
 			name : '/eventDetail/:id',
 			path : '/eventDetail/:id',
 			component : EventDetail
+		},
+		{
+			name : '/printOrder/:id',
+			path : '/printOrder/:id',
+			component : printOrder
 		},
 		{
 			name : 'event_manager',

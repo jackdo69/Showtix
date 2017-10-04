@@ -28,11 +28,7 @@
 				<input v-model="newEvent.location" type="text" class="form-control" id="location" placeholder="Event location">
 			</div>
 			<div class="form-group">
-				<label for="seats_available">Seats available</label>
-				<input v-model="newEvent.seats_available" type="text" class="form-control" id="seats_available" placeholder="Event seats_available">
-			</div>
-			<div class="form-group">
-				<label for="seats_available">Created</label>
+				<label for="created">Created</label>
 				<input v-model="newEvent.created" type="text" class="form-control" id="created" placeholder="created">
 			</div>
 		  </div>
@@ -100,8 +96,6 @@
 			<th>price A/quantity</th>
 			<th>price B/quantity</th>
 			<th>price C/quantity</th>
-			<th>rest</th>
-			<th>seats_available</th>
 			<th>created</th>
 			<th>Actions</th>
 		</tr>
@@ -112,8 +106,6 @@
 			<td>{{event.priceA}}/{{event.quantityA}}</td>
 			<td>{{event.priceB}}/{{event.quantityB}}</td>
 			<td>{{event.priceC}}/{{event.quantityC}}</td>
-			<td>{{event.rest}}</td>
-			<td>{{event.seats_available}}</td>
 			<td>{{event.created}}</td>
 			<td>
 				<button v-on:click="editEvent(event)" type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit</button>
@@ -144,8 +136,7 @@ import moment from 'moment'
 - Location
 - Short Description (display on Home)
 - Detail (Display on Detail page)
-- Price (Display on detail Page)
-- Seats available (Display on Detail Page)*/
+- Price (Display on detail Page)*/
 
   
   export default {
@@ -168,7 +159,6 @@ import moment from 'moment'
   			quantityB: 0,
   			quantityC: 0,
   			rest: 0,
-  			seats_available: 0,
   			created: moment().format('MM/DD/YYYY hh:mm')
   		}
       }
@@ -195,7 +185,6 @@ import moment from 'moment'
 					this.newEvent.quantityA= 0;
 					this.newEvent.quantityB= 0;
 					this.newEvent.quantityC= 0;
-					this.newEvent.seats_available= 0;
 					this.newEvent.created= moment().format('MM/DD/YYYY hh:mm');
 					return true;
 				}else{

@@ -46,16 +46,19 @@ export default {
   data () {
     return {
        newEvent: {
-  			name: '',
-  			pic_url: '',
-  			location: '',
-  			description: '',
-  			detail: '',
-  			price: 0,
-  			rest: 0,
-  			quantity: 0,
-  			seats_available: 0,
-  			created: moment().format('MM/DD/YYYY hh:mm')
+    	   name: '',
+ 			pic_url: '',
+ 			location: '',
+ 			description: '',
+ 			detail: '',
+ 			priceA: 0,
+ 			priceB: 0,
+ 			priceC: 0,
+ 			quantityA: 0,
+ 			quantityB: 0,
+ 			quantityC: 0,
+ 			rest: 0,
+ 			created: moment().format('MM/DD/YYYY hh:mm')
   		},
 		user: null,
 		showModal: false

@@ -64,5 +64,11 @@
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
-  ]
+  ],
+  "main": ".postcssrc.js",
+  "repository": {
+    "type": "git",
+    "url": "https://jackieducdogmailcom1@helixteamhub.cloud/sun/projects/quicktix/repositories/git/quicktix"
+  },
+  "license": "ISC"
 }
