@@ -38,19 +38,19 @@
 		  		<label for="Pricea">Price A</label>
 				<input name="price" v-model="newEvent.priceA" type="text" class="form-control" v-validate="'required|numeric'" :class="{'input': true, 'is-danger': errors.has('priceA') }" placeholder="Event price">
 				</div>
-			
+
 				<div class="col-sm-6">
 				<label for="Pricea">Quantity</label>
 				<input name="price" v-model="newEvent.quantityA" type="text" class="form-control" v-validate="'required|numeric'" :class="{'input': true, 'is-danger': errors.has('quantityA') }" placeholder="quantity A">
 				</div>
-			
+
 			</div>
 			<div class="form-group">
 				<div class="col-sm-6">
 		  		<label for="Priceb">Price B</label>
 				<input name="price" v-model="newEvent.priceB" type="text" class="form-control" v-validate="'required|numeric'" :class="{'input': true, 'is-danger': errors.has('priceB') }" placeholder="Event price">
 			</div>
-			
+
 				<div class="col-sm-6">
 				<label for="Pricea">Quantity</label>
 				<input name="price" v-model="newEvent.quantityB" type="text" class="form-control" v-validate="'required|numeric'" :class="{'input': true, 'is-danger': errors.has('quantityB') }" placeholder="quantity B">
@@ -61,7 +61,7 @@
 		  		<label for="Pricec">Price C</label>
 				<input name="price" v-model="newEvent.priceC" type="text" class="form-control" v-validate="'required|numeric'" :class="{'input': true, 'is-danger': errors.has('priceC') }" placeholder="Event price">
 				</div>
-			
+
 				<div class="col-sm-6">
 				<label for="Pricea">Quantity</label>
 				<input name="price" v-model="newEvent.quantityC" type="text" class="form-control" v-validate="'required|numeric'" :class="{'input': true, 'is-danger': errors.has('quantityC') }" placeholder="quantity C">
@@ -76,7 +76,7 @@
 			<a class="btn btn-success my-2 my-sm-0" v-if="newEvent['.key']" v-on:click="updateEvent(newEvent)">Update</a>
 			<a class="btn btn-success my-2 my-sm-0" v-if="!newEvent['.key']" v-on:click="addEvent">Add Event</a>
 			  </div></div>
-			          
+
 			</div>
 		</form>
 	</div>
@@ -138,7 +138,7 @@ import moment from 'moment'
 - Detail (Display on Detail page)
 - Price (Display on detail Page)*/
 
-  
+
   export default {
     components: {
       Event
@@ -164,7 +164,7 @@ import moment from 'moment'
       }
     },
     watch: {
-     
+
     },
     methods: {
 		addEvent: function () {
@@ -219,13 +219,13 @@ import moment from 'moment'
 		          	return false;
 		        }
 	      });
-		}, 
+		},
     removeEvent: function (event) {
       eventsRef.child(event['.key']).remove()
 			//toastr.success('Event removed successfully')
       		alert("Event removed successfully");
-    }, 
-		
+    },
+
   },
 	// Explicitly set binding data to firebase as an array.
 	created() {
@@ -237,14 +237,14 @@ import moment from 'moment'
   .events {
     margin: 0px
   }
-  
-  .col-6{    
+
+  .col-6{
 padding: 20px;
   width: 50%;}
-  
+
   .table-striped img{
 	  width:100px;
-  padding:5px;	
+  padding:5px;
   }
   .is-danger{
    color:red;

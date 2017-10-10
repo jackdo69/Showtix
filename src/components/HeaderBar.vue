@@ -3,7 +3,7 @@
     <nav class="navbar navbar-inverse navbar-light">
 	  <div class="container">
 		  <div class="row">
-				<div class="navbar-header"> 
+				<div class="navbar-header">
 					<div id="logo">
 							<img src="../assets/quicktix_logo.jpg" />
 						</div>
@@ -25,9 +25,7 @@
 					  </router-link>
 					</li>
 					<li  v-if="user">
-					<router-link to="/index" class="nav">
-				  <a>Hi, {{user.userTitle}}</a>
-				  </router-link>
+				  		<router-link :to="{ name: '/user', params: { userId: user.userTitle }}">{{user.userTitle}}</router-link>
 					</li>
 					<li><a class="nav"  href="#" v-on:click.prevent="signOut" v-if="user">Logout
 					</a></li>
@@ -49,7 +47,7 @@
  import Auth from '../data/Auth'
   import EventBus from './EventBus'
   import checkAuth from '../data/checkAuth'
-  
+
   export default {
     data () {
       return {
@@ -57,7 +55,7 @@
       }
     },
     watch: {
-      
+
     },
     created() {
     	Auth.onAuth(this.processUser) // processUser everytime auth state changes (signs in or out)
@@ -75,6 +73,12 @@
               isAdmin: checkAuth.isAdmin(authed.providerData[0].email)
             }
           },
+          toDetail(){
+            console.log(this.user.userTitle)
+            EventBus.$emit('user', this.user.userTitle)
+            const userKey = this.user.userTitle
+            this.$router.push({name:'/user/:id', params: {id: userKey}})
+          },
           signOut () {
               Auth.signOut()
               this.$router.push('/auth')
@@ -88,7 +92,7 @@
        * @return boolean
        */
       isAuthenticated: function () {
-    	  
+
     	  console.log("processUser:" + isAuthenticated);
     	  firebase.auth().onAuthStateChanged(function(user) {
           	  if (user) {
@@ -110,6 +114,13 @@
   }
 </script>
 <style>
+.navbar-inverse .navbar-nav>li>a {
+    color: #337ab7;
+}
+.navbar-inverse .navbar-nav>li>a:focus, .navbar-inverse .navbar-nav>li>a:hover{
+	color: #90EE90;
+}
+
 .navbar-inverse {
     background-color: transparent;
     border-color: transparent;
@@ -163,9 +174,9 @@
     cursor: pointer;
     transition: color .2s;
   }
-  header a:focus, header a:hover {
-    color: #41b883;
-  }
+  /*header a:focus, header a:hover {
+    color: #c2f442;
+  }*/
   @media screen and (max-width: 1200px) {
     header span{
       display: none;
@@ -180,7 +191,7 @@
       display: none;
     }
   }
-  
+
   .nav {
 	    display: block;
 	    text-align: center;
@@ -192,11 +203,11 @@
   #logo img {
 	    height: 100px;
 	  }
-	  
+
 	  .scroll:hover{
 	  background-color: #90EE90;
 	  }
-	  
+
 	  .navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover{
 	   background-color: #90EE90;
 	  }

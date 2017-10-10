@@ -6,6 +6,7 @@ import VueRouter from 'vue-router'
 import AuthPage from './components/pages/Auth'
 import Home from './components/pages/Home'
 import EventDetail from './components/pages/EventDetail'
+import UserDetail from './components/pages/User'
 import Index from './components/events/Index'
 import VeeValidate from 'vee-validate';
 import * as firebase from "firebase";
@@ -41,6 +42,12 @@ const router = new VueRouter({
 			component : EventDetail
 		},
 		{
+			name : '/user',
+			path : '/user',
+			component : UserDetail,
+			meta: { requiresAuth: true }
+		},
+		{
 			name : '/printOrder/:id',
 			path : '/printOrder/:id',
 			component : printOrder
@@ -64,7 +71,7 @@ router.beforeEach((to, from, next) => {
             next();
           }
       });
-   
+
 })
 
 
