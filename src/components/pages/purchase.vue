@@ -3,11 +3,11 @@
 	<div class="modal-container">
 		<form class="form-horizontal">
 			<div class="modal-header">
-				<h3>Order detail: {{event.name}}</h3>
+				<h3>Purchasing tickets for: <strong>{{event.name}}</strong></h3>
 			</div>
 			<div class="modal-body">
 				<div class="form-group">
-					<label class="col-sm-6 control-label">Quantity Type A</label>
+					<label class="col-sm-6 control-label">Quantity - Type A:</label>
 					<div class="col-sm-4">
 						<input v-model="event.quantityA" type="hidden">
 						<input v-model="event.quantityB" type="hidden">
@@ -17,50 +17,70 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-sm-6 control-label">Quantity Type B</label>
+					<label class="col-sm-6 control-label">Quantity - Type B:</label>
 					<div class="col-sm-4">
 						<input v-model="quantityB" type="number" min="0" placeholder="quantity" class="form-control">
 						<span v-if="errB" style="color:red">Error: out of range</span>
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-sm-6 control-label">Quantity Type C</label>
+					<label class="col-sm-6 control-label">Quantity - Type C:</label>
 					<div class="col-sm-4">
 						<input v-model="quantityC" type="number" min="0" placeholder="quantity" class="form-control">
 						<span v-if="errC" style="color:red">Error: out of range</span>
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-sm-6 control-label">Total: <span
-						v-model="total">{{event.priceA * quantityA + event.priceB * quantityB + event.priceC * quantityC}}</span> USD
-					</label>
+					<h3 class="col-sm-6 control-label text-center" id="total">Total: <span
+						v-model="total">${{event.priceA * quantityA + event.priceB * quantityB + event.priceC * quantityC}}</span> AUD
+					</h3>
 				</div>
-				<div class="text-center" style="padding: 10px;">
-					<img src="../../assets/pay-icon.png" style="width: 50%" />
-				</div>
+
+        <div class="col-sm-4">
+          <img id="icon" src="../../assets/pay-icon.png" />
+        </div>
+        <br></br>
+        <br></br>
+        <br></br>
 				<div class="form-group">
-					<label class="col-sm-4 control-label">Card number</label>
+					<label class="col-sm-4 control-label">Card Number</label>
 					<div class="col-sm-8">
-						<input type="number" placeholder="Card number"
-							class="form-control">
+						<input name="card number" type="text" v-validate="{ rules: 'required|numeric|min:16|max:16'}" placeholder="a valid card number"
+							class="form-control" >
+              <span
+                v-show="errors.has('card number')">
+                {{errors.first('card number')}}
+              </span>
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-sm-4 control-label">Expired Date</label>
+					<label class="col-sm-4 control-label">Expiry Date</label>
 					<div class="col-sm-4">
-						<input v-model.number="month" min="1" max="12" placeholder="Month"
+						<input name="Month" v-model.number="month" v-validate="{ rules: 'required|numeric|min_value:1|max_value:12'}" placeholder="month"
 							class="form-control">
+              <span
+                v-show="errors.has('Month')">
+                {{errors.first('Month')}}
+              </span>
 					</div>
 					<div class="col-sm-4">
-						<input v-model.number="year" placeholder="Year"
+						<input name="Year" v-model.number="year" v-validate="{ rules: 'required|numeric|min_value:2017'}" placeholder="year"
 							class="form-control">
+              <span
+                v-show="errors.has('Year')">
+                {{errors.first('Year')}}
+              </span>
 					</div>
 				</div>
 				<div class="form-group">
 					<label class="col-sm-4 control-label">CVC</label>
 					<div class="col-sm-8">
-						<input v-model="cvc" type="text" placeholder="CVC"
+						<input name="cvc" v-model="cvc" type="text" v-validate="{ rules: 'required|numeric|min:3|max:3'}" placeholder="cvc"
 							class="form-control">
+              <span
+                v-show="errors.has('cvc')">
+                {{errors.first('cvc')}}
+              </span>
 					</div>
 				</div>
 			</div>
@@ -85,7 +105,10 @@
   let historyRef = db.ref('history')
 	import moment from 'moment'
 	import Auth from '../../data/Auth'
-	
+  import VeeValidate from 'vee-validate'
+
+  Vue.use(VeeValidate)
+
   export default {
 	  props: ['show'],
     data () {
@@ -123,11 +146,11 @@
   			created: moment().format('MM/DD/YYYY hh:mm')
   		},
   		total: 0,
-  		quantityA: 1,
+  		quantityA: 0,
   		quantityB: 0,
   		quantityC: 0,
-  		month: 1,
-  		year: 1990,
+  		month: 10,
+  		year: 2017,
   		cvc: '',
   		errA: false,
   		errB: false,
@@ -139,7 +162,7 @@
     		if(Number(val) > Number(this.event.quantityA)){
     			this.errA = true;
     			alert("Error: out of range");
-    			this.quantityA = this.event.quantityA; 
+    			this.quantityA = this.event.quantityA;
     		}else{
     			this.errA = false;
     		}
@@ -162,9 +185,9 @@
     			this.errC = false;
     		}
     	}
-      	
+
       },
-    created () {    	
+    created () {
       EventBus.$on('open-modal-purchase', (event) => {
     	  this.event = Vue.util.extend({}, event)
     	  //this.$emit('open');
@@ -179,41 +202,48 @@
         this.$emit('close');
       },
       buy () {
-      	//update event Quantity
-      	this.event.quantityA = Number(this.event.quantityA) - Number(this.quantityA);
-      	this.event.quantityB = Number(this.event.quantityB) - Number(this.quantityB);
-      	this.event.quantityC = Number(this.event.quantityC) - Number(this.quantityC);
-      	
-      	var childKey = this.$route.params.id;
-      	//console.log("childKey:" + childKey);
-      	eventsRef.child(childKey).set(this.event)
-      	//console.log("buy:buy");
-      	//console.log(this.event);
-      	//store history
-      	var authed = Auth.getAuth();
-      	this.history.childKey = childKey;
-      	this.history.priceA = this.event.priceA;
-      	this.history.priceB= this.event.priceB;
-      	this.history.priceC= this.event.priceC;
-      	this.history.quantityA= this.quantityA;
-      	this.history.quantityB= this.quantityB;
-      	this.history.quantityC= this.quantityC;
-      	this.history.buyer = authed.providerData[0].email;
-      	this.history.eventName= this.event.name;
-      	this.history.total= this.event.priceA * this.quantityA + this.event.priceB * this.quantityB + this.event.priceC * this.quantityC;
-      	this.history.startDate = this.event.created;
-      	this.history.pic_url = this.event.pic_url;
-      	this.history.location = this.event.location;
-      	this.history.ticketId = Math.floor(Math.random() * (99999 -11111 +1)) + 11111;
-      	var path = historyRef.push(this.history);
-      	console.log(path.key);
-      	this.$emit('close');
-      	//https://test-e9402.firebaseio.com/history/-KvaWusPCqhX37VfDcLy
-      	this.$router.push({ name:'/printOrder/:id', params: { id: path.key } })
-			
+        this.$validator.validateAll().then((result) => {
+          if (result) {
+            // eslint-disable-next-line
+            alert('Processing purchase...');
+              //update event Quantity
+              this.event.quantityA = Number(this.event.quantityA) - Number(this.quantityA);
+              this.event.quantityB = Number(this.event.quantityB) - Number(this.quantityB);
+              this.event.quantityC = Number(this.event.quantityC) - Number(this.quantityC);
+              var childKey = this.$route.params.id;
+              //console.log("childKey:" + childKey);
+              eventsRef.child(childKey).set(this.event)
+              //console.log("buy:buy");
+              //console.log(this.event);
+              //store history
+              var authed = Auth.getAuth();
+              this.history.childKey = childKey;
+              this.history.priceA = this.event.priceA;
+              this.history.priceB= this.event.priceB;
+              this.history.priceC= this.event.priceC;
+              this.history.quantityA= this.quantityA;
+              this.history.quantityB= this.quantityB;
+              this.history.quantityC= this.quantityC;
+              this.history.buyer = authed.providerData[0].email;
+              this.history.eventName= this.event.name;
+              this.history.total= this.event.priceA * this.quantityA + this.event.priceB * this.quantityB + this.event.priceC * this.quantityC;
+              this.history.startDate = this.event.created;
+              this.history.pic_url = this.event.pic_url;
+              this.history.location = this.event.location;
+              this.history.ticketId = Math.floor(Math.random() * (99999 -11111 +1)) + 11111;
+              var path = historyRef.push(this.history);
+              console.log(path.key);
+              this.$emit('close');
+              //https://test-e9402.firebaseio.com/history/-KvaWusPCqhX37VfDcLy
+              this.$router.push({ name:'/printOrder/:id', params: { id: path.key } })
+              return;
+          }
+          alert('Please complete all required fields');
+        });
+        }
       }
     }
-  }
+
 </script>
 <style>
 .modal-mask {
@@ -292,4 +322,10 @@
 	-webkit-transform: scale(1.1);
 	transform: scale(1.1);
 }
+
+#total {
+  font-style: bold;
+}
+
+
 </style>

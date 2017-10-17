@@ -7,6 +7,7 @@ import AuthPage from './components/pages/Auth'
 import Home from './components/pages/Home'
 import EventDetail from './components/pages/EventDetail'
 import UserDetail from './components/pages/User'
+import PurchaseHistory from './components/pages/PurchaseHistory'
 import Index from './components/events/Index'
 import VeeValidate from 'vee-validate';
 import * as firebase from "firebase";
@@ -45,6 +46,12 @@ const router = new VueRouter({
 			name : '/user',
 			path : '/user',
 			component : UserDetail,
+			meta: { requiresAuth: true }
+		},
+		{
+			name : '/purchase-history',
+			path : '/purchaseHistory',
+			component : PurchaseHistory,
 			meta: { requiresAuth: true }
 		},
 		{

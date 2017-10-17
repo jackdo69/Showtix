@@ -40,7 +40,6 @@
     methods: {
       signUpWithPassword () {
         if (this.password === this.confirmPassword) {
-          alert('testing')
           Auth.signUpWithPassword({
             email: this.email,
             password: this.password

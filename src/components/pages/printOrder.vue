@@ -1,9 +1,9 @@
 <template>
   <div class="container" id="printarea">
-	  <h1><img src="../../assets/quicktix_logo.jpg" style="width:80px" /> Buy event success</h1>
+	  <h1><img src="../../assets/quicktix_logo.jpg" style="width:50px" /> Thanks for your purchase!</h1>
 	  <hr />
-	  <div class="tab-pane fade in active">
-			<div class="media">
+	  <div class="tab-pane fade in active well-lg">
+			<div class="media well-lg">
 				<img v-bind:src="history.pic_url" v-model="history.pic_url" class="pull-left media-object">
 				<div class="media-body">
 					<div class="col-sm-9">
@@ -22,17 +22,17 @@
 						<div class="text-info col-sm-12" style="padding-bottom:10px">
 						  <strong>Buyer: </strong><span class="text-danger">{{history.buyer}}</span>
 						</div>
-						<div class="col-sm-12" style="padding-bottom:10px"  v-if="history.quantityA > 0">
-							<strong>Type A - Price: </strong> <span class="text-danger">{{history.priceA}} x {{history.quantityA}} = {{history.priceA * history.quantityA}} USD</span>
+						<div class="text-info col-sm-12" style="padding-bottom:10px"  v-if="history.quantityA > 0">
+							<strong>Type A - Price: </strong> <span class="text-danger">{{history.priceA}} x {{history.quantityA}} = {{history.priceA * history.quantityA}} AUD</span>
 						</div>
-						<div class="col-sm-12" style="padding-bottom:10px" v-if="history.quantityB > 0">
-							<strong>Type B - Price: </strong> <span class="text-danger">{{history.priceB}} x {{history.quantityB}} = {{history.priceB * history.quantityB}} USD</span>
+						<div class="text-info col-sm-12" style="padding-bottom:10px" v-if="history.quantityB > 0">
+							<strong>Type B - Price: </strong> <span class="text-danger">{{history.priceB}} x {{history.quantityB}} = {{history.priceB * history.quantityB}} AUD</span>
 						</div>
-						<div class="col-sm-12" style="padding-bottom:10px" v-if="history.quantityC > 0">
-							<strong>Type C - Price: </strong> <span class="text-danger">{{history.priceC}} x {{history.quantityC}} = {{history.priceC * history.quantityC}} USD</span>
+						<div class="text-info col-sm-12" style="padding-bottom:10px" v-if="history.quantityC > 0">
+							<strong>Type C - Price: </strong> <span class="text-danger">{{history.priceC}} x {{history.quantityC}} = {{history.priceC * history.quantityC}} AUD</span>
 						</div>
 						<div class="col-sm-12 text-left"  style="padding-bottom:10px" ><strong>Total:</strong> {{history.total}} USD</div>
-						<div class="col-sm-12 text-left"  style="padding-bottom:10px" ><strong>Buy date:</strong> {{history.created}}</div>
+						<div class="col-sm-12 text-left"  style="padding-bottom:10px" ><strong>Purchase date/time:</strong> {{history.created}}</div>
 					</div>
 					<div class="col-sm-12">
 						<div class="text-center" style="padding:10px">
@@ -55,7 +55,7 @@ import eventRepository from '../../data/EventRepository'
   let historyRef = db.ref('history')
 import moment from 'moment'
   import checkAuth from '../../data/checkAuth'
-  
+
 export default {
   data () {
     return {

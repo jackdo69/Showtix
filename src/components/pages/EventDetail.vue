@@ -1,31 +1,57 @@
 <template>
   <div class="container">
+    <div class="jumbotron">
 	  <h1>Event detail</h1>
-	  <hr />
-	  <div class="tab-pane fade in active">
-			<div class="media">
-				<img v-bind:src="newEvent.pic_url" v-model="newEvent.pic_url" class="pull-left media-object">
-				<div class="media-body">
-					<div class="text-info col-sm-12">
-					  <b>{{newEvent.location}}: {{newEvent.name}} | Date: {{newEvent.created}}</b>
-					</div>
-					<div class="col-sm-12 text-right" style="padding-bottom:10px">
-						<strong>Type A - Price: </strong> <span class="text-danger">{{newEvent.priceA}} USD</span>  |
-						<strong>Type B - Price: </strong> <span class="text-danger">{{newEvent.priceB}} USD</span>  |
-						<strong>Type C - Price: </strong> <span class="text-danger">{{newEvent.priceC}} USD</span>
-					</div>
-					<div class="text-left"><strong>Description:</strong> {{newEvent.description}}</div>
-					<div class="text-right" style="padding:10px">
-						<a class="btn btn-success my-2 my-sm-0" v-on:click.prevent="gotoLogin" v-if="!user">Login to purchase</a>
-						<a class="btn btn-success my-2 my-sm-0" v-on:click.prevent="purchase(newEvent)" v-if="user">Purchase</a>
-					</div>
-					<div class="text-left"><strong>Detail:</strong> {{newEvent.detail}}</div>
-				</div>
-			</div>
-	  </div>
-	  <purchase :show="showModal" @close="showModal = false"></purchase>
-  </div>
+    </div>
+  </hr>
+  <div class="tab-pane fade in active">
+   <div class="media bg-info">
+     <img v-bind:src="newEvent.pic_url" v-model="newEvent.pic_url" class="pull-left media-object">
+     <div class="well-lg rounded">
+       <p class="text-info col-md-12">
+         <h1><strong>{{newEvent.location.toLowerCase()}}: {{newEvent.name.toLowerCase()}} - date: {{newEvent.created.toLowerCase()}}</strong></h1>
+         <h3><strong>detail:</strong></h3> <div class="text-center">{{newEvent.detail}}</div>
+         <br></br>
+         <div class="panel panel-primary well-sm col-sm-4">
+           <h2 class="panel-heading text-center"> TICKET PRICING </h2>
+			<table class="table table-hover table-condensed">
+			    <thead>
+			      <tr>
+			        <th class="text-center">Ticket Type</th>
+			        <th class="text-center">Ticket Price</th>
+			      </tr>
+			    </thead>
+			    <tbody>
+			      <tr>
+			        <td class="text-center">Type A</td>
+			        <td class="text-center"><span class="text-danger">${{newEvent.priceA}} AUD</span></td>
+			      </tr>
+			      <tr>
+			        <td class="text-center">Type B</td>
+			        <td class="text-center" ><span class="text-danger">${{newEvent.priceB}} AUD</span></td>
+			      </tr>
+			      <tr>
+			        <td class="text-center">Type C</td>
+			        <td class="text-center"><span class="text-danger">${{newEvent.priceB}} AUD</span></td>
+			      </tr>
+			   </tbody>
+			</table>
+			</hr>
+			<br></br>
+			<br></br>
+         </div>
+     </p>
 
+       <div class="text-center col-md-4" style="padding:10px" >
+         <a class="btn-lg btn-success" v-on:click.prevent="gotoLogin" v-if="!user" id="btn1">Login to purchase</a>
+         <a class="btn-lg btn-success" v-on:click.prevent="purchase(newEvent)" v-if="user" id="btn1">Purchase</a>
+       </div>
+   </hr>
+	<purchase :show="showModal" @close="showModal = false"></purchase>
+     </div>
+   </div>
+  </div>
+</div>
 </template>
 
 <script>
@@ -95,15 +121,33 @@ export default {
 			  var value = snapshot.val();
 			  this.newEvent = value;
 			});
-
 	}
 }
 </script>
 
 <style>
 .media img{
-	width:200px;
+	width: 200px;
+    float: left;
+    margin: 20px;
+    padding: 20px;
 }
+
+.container .panel{
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(0%);
+
+}
+
+.container #btn1 {
+    position: relative;
+    top: 220px;
+    transform: translateX(-50%) translateY(0%);
+
+}
+
 
 
 </style>
